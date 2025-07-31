@@ -81,20 +81,28 @@
         document.addEventListener('DOMContentLoaded', () => {
             // --- Data ---
             const nycDemandData = [
-                { name: 'Midtown', demand: 95, x: 48, y: 42 }, { name: 'Financial District', demand: 80, x: 50, y: 55 },
-                { name: 'Williamsburg', demand: 75, x: 58, y: 50 }, { name: 'JFK Area', demand: 60, x: 85, y: 65 },
-                { name: 'Upper East Side', demand: 50, x: 52, y: 30 }, { name: 'Harlem', demand: 40, x: 45, y: 20 },
-                { name: 'The Bronx', demand: 30, x: 55, y: 5 }, { name: 'Staten Island', demand: 20, x: 25, y: 80 },
-                { name: 'SoHo', demand: 88, x: 49, y: 50 }, { name: 'Chelsea', demand: 78, x: 45, y: 45 },
-                { name: 'Greenwich V.', demand: 72, x: 48, y: 52 }, { name: 'DUMBO', demand: 68, x: 52, y: 58 },
-                { name: 'Lower East Side', demand: 65, x: 55, y: 54 }, { name: 'Long Island City', demand: 58, x: 60, y: 38 },
-                { name: 'Upper West Side', demand: 55, x: 42, y: 32 }, { name: 'Bushwick', demand: 45, x: 68, y: 48 },
+                { name: 'Midtown', demand: 95, x: 48, y: 42, weather: 'rain' }, 
+                { name: 'Financial District', demand: 80, x: 50, y: 55, weather: 'rain' },
+                { name: 'Williamsburg', demand: 75, x: 58, y: 50, weather: 'cloudy' }, 
+                { name: 'JFK Area', demand: 60, x: 85, y: 65, weather: 'cloudy' },
+                { name: 'Upper East Side', demand: 50, x: 52, y: 30, weather: 'rain' }, 
+                { name: 'Harlem', demand: 40, x: 45, y: 20, weather: 'cloudy' },
+                { name: 'The Bronx', demand: 30, x: 55, y: 5, weather: 'sunny' }, 
+                { name: 'Staten Island', demand: 20, x: 25, y: 80, weather: 'sunny' },
+                { name: 'SoHo', demand: 88, x: 49, y: 50, weather: 'rain' }, 
+                { name: 'Chelsea', demand: 78, x: 45, y: 45, weather: 'rain' },
+                { name: 'Greenwich V.', demand: 72, x: 48, y: 52, weather: 'rain' }, 
+                { name: 'DUMBO', demand: 68, x: 52, y: 58, weather: 'cloudy' },
+                { name: 'Lower East Side', demand: 65, x: 55, y: 54, weather: 'cloudy' }, 
+                { name: 'Long Island City', demand: 58, x: 60, y: 38, weather: 'rain' },
+                { name: 'Upper West Side', demand: 55, x: 42, y: 32, weather: 'cloudy' }, 
+                { name: 'Bushwick', demand: 45, x: 68, y: 48, weather: 'cloudy' },
             ];
             const vehicles = [
                 { id: 1, x: 50, y: 40, status: 'active' }, { id: 2, x: 60, y: 50, status: 'active' },
                 { id: 3, x: 20, y: 30, status: 'idle' }, { id: 4, x: 80, y: 70, status: 'redeploying' },
                 { id: 5, x: 45, y: 65, status: 'active' }, { id: 6, x: 55, y: 25, status: 'idle' },
-                { id: 7, x: 70, y: 80, status: 'active' }, { id: 8, x: 30, y: 55, status: 'maintenance' },
+                { id: 7, x: 70, y: 80, status: 'active' },
                 { id: 9, x: 65, y: 45, status: 'active' }, { id: 10, x: 25, y: 75, status: 'idle' },
             ];
             const weatherForecastData = [
@@ -163,12 +171,17 @@
                 const getVehicleIcon = (status) => {
                     const icons = { active: 'truck', idle: 'check-circle', redeploying: 'zap', maintenance: 'battery-charging' };
                     const colors = { active: 'text-green-400', idle: 'text-cyan-400', redeploying: 'text-yellow-400', maintenance: 'text-red-500' };
-                    return `<i data-lucide="${icons[status] || 'truck'}" class="w-4 h-4 ${colors[status] || 'text-gray-400'}"></i>`;
+                    return `<i data-lucide="${icons[status] || 'truck'}" class="w-10 h-10 ${colors[status] || 'text-gray-400'}"></i>`;
+                };
+                const getWeatherIcon = (weather) => {
+                    const icons = { rain: 'cloud-rain', cloudy: 'cloud', sunny: 'sun' };
+                    return `<i data-lucide="${icons[weather] || 'sun'}" class="w-5 h-5 text-blue-300"></i>`;
                 };
 
                 const gridCells = nycDemandData.map(zone => `
-                    <div class="flex items-center justify-center rounded" style="background-color: ${getColor(zone.demand)};">
+                    <div class="relative flex items-center justify-center rounded" style="background-color: ${getColor(zone.demand)};">
                         <span class="text-white text-xs font-bold backdrop-blur-sm p-1 rounded">${zone.name}</span>
+                        <div class="absolute bottom-1 right-1">${getWeatherIcon(zone.weather)}</div>
                     </div>
                 `).join('');
                 
@@ -191,6 +204,7 @@
                                     <div class="flex items-center"><i data-lucide="truck" class="w-3 h-3 text-green-400 mr-1"></i><span>운행 중</span></div>
                                     <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-cyan-400 mr-1"></i><span>대기 중</span></div>
                                     <div class="flex items-center"><i data-lucide="zap" class="w-3 h-3 text-yellow-400 mr-1"></i><span>재배치 중</span></div>
+                                    <div class="flex items-center"><i data-lucide="sun" class="w-3 h-3 text-blue-300 mr-1"></i><span>날씨</span></div>
                                 </div>
                             `)}
                         </div>
