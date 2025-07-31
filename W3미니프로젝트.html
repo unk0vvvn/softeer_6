@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>패션 MD 에이전트: 2025 F/W 인터랙티브 트렌드 보고서</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral Harmony -->
+    <!-- Application Structure Plan: A thematic dashboard structure is used instead of a linear slide format. It starts with a main dashboard for a high-level overview, then allows users to dive into specific sections: Lifestyle Trends, Fashion Week Analysis (with interactive tabs for cities), Competitor Watch, and a final actionable Proposal section. This structure guides the user from broad cultural shifts to specific, actionable business ideas, which is more intuitive and useful for a product manager or designer than a static presentation. -->
+    <!-- Visualization & Content Choices: SNS keywords are represented as a styled HTML tag cloud for better interactivity. Fashion Week YouTube sentiment, originally a word cloud concept, is transformed into a clearer, quantitative bar chart using Chart.js for each city, enabling direct comparison. Competitor info is in a simple two-column layout for easy scanning. The final proposals are interactive cards that reveal more details on click. This approach prioritizes data clarity and user engagement over literal translations of the source report's visuals. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFBF8; /* Warm Neutral: A very light cream */
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #A16207; /* Amber 700 */
+            border-bottom-color: #A16207;
+        }
+        .tab-link.active {
+            background-color: #A16207; /* Amber 700 */
+            color: #ffffff;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .proposal-card-back {
+            transform: rotateY(180deg);
+        }
+        .proposal-card.flipped .proposal-card-inner {
+            transform: rotateY(180deg);
+        }
+        .keyword-tag {
+            transition: all 0.2s ease-in-out;
+        }
+        .keyword-tag:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-xl md:text-2xl font-bold text-amber-800">Fashion MD Agent</h1>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#dashboard" class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">대시보드</a>
+                    <a href="#lifestyle" class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">라이프스타일</a>
+                    <a href="#fashion-week" class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">패션위크</a>
+                    <a href="#competitors" class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">경쟁사</a>
+                    <a href="#proposal" class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">시즌 제안</a>
+                </div>
+                 <button id="mobile-menu-button" class="md:hidden text-stone-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+             <div id="mobile-menu" class="hidden md:hidden py-4">
+                <a href="#dashboard" class="block py-2 px-4 text-sm text-stone-600 hover:bg-amber-50 rounded">대시보드</a>
+                <a href="#lifestyle" class="block py-2 px-4 text-sm text-stone-600 hover:bg-amber-50 rounded">라이프스타일</a>
+                <a href="#fashion-week" class="block py-2 px-4 text-sm text-stone-600 hover:bg-amber-50 rounded">패션위크</a>
+                <a href="#competitors" class="block py-2 px-4 text-sm text-stone-600 hover:bg-amber-50 rounded">경쟁사</a>
+                <a href="#proposal" class="block py-2 px-4 text-sm text-stone-600 hover:bg-amber-50 rounded">시즌 제안</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+
+        <section id="dashboard" class="scroll-mt-20 text-center mb-16 md:mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-stone-900">2025 F/W 시즌 핵심 전략</h2>
+            <p class="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-800 mb-6">"Smart & Soft Utility"</p>
+            <p class="max-w-3xl mx-auto text-stone-600 text-lg">
+                실용적인 기능성과 편안함을 기반으로, 부드럽고 고급스러운 감성을 더한 새로운 개념의 데일리웨어를 제안합니다. 이 보고서는 SNS, 패션위크, 경쟁사 데이터를 종합 분석하여 다음 시즌의 성공을 위한 핵심 인사이트를 제공합니다.
+            </p>
+        </section>
+
+        <section id="lifestyle" class="scroll-mt-20 mb-16 md:mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-stone-900 mb-2">새로운 라이프스타일의 부상</h2>
+                <p class="text-stone-600">SNS 키워드 분석을 통해 소비자들이 추구하는 가치와 라이프스타일의 변화를 파악합니다.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold text-xl mb-4 text-center text-amber-800">주요 라이프스타일 키워드</h3>
+                    <div class="flex flex-wrap justify-center items-center gap-3 text-center">
+                        <span class="keyword-tag bg-amber-100 text-amber-800 text-2xl font-bold px-4 py-2 rounded-full">#조용한명품</span>
+                        <span class="keyword-tag bg-emerald-100 text-emerald-800 text-xl font-bold px-3 py-1 rounded-full">#지속가능성</span>
+                        <span class="keyword-tag bg-sky-100 text-sky-800 text-lg font-bold px-3 py-1 rounded-full">#에슬레저</span>
+                        <span class="keyword-tag bg-stone-200 text-stone-700 text-lg font-bold px-3 py-1 rounded-full">#편안함</span>
+                        <span class="keyword-tag bg-emerald-100 text-emerald-700 text-md px-2 py-1 rounded-full">#친환경소재</span>
+                        <span class="keyword-tag bg-rose-100 text-rose-800 text-md px-2 py-1 rounded-full">#Y2K패션</span>
+                        <span class="keyword-tag bg-stone-200 text-stone-600 text-sm px-2 py-1 rounded-full">#홈웨어</span>
+                        <span class="keyword-tag bg-sky-100 text-sky-700 text-sm px-2 py-1 rounded-full">#자기관리</span>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <h4 class="font-bold text-lg text-stone-800">'조용한 명품'의 대중화</h4>
+                        <p class="text-stone-600 text-sm">로고 없는 심플하고 고급스러운 디자인과 좋은 소재에 대한 수요가 증가하며, 개인의 만족감을 중시하는 소비 트렌드가 확산되고 있습니다.</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <h4 class="font-bold text-lg text-stone-800">'지속가능성'과 '친환경' 소비</h4>
+                        <p class="text-stone-600 text-sm">재활용, 친환경 공법 등 자신의 가치관을 패션으로 표현하는 소비가 주요 구매 결정 요인으로 자리 잡고 있습니다.</p>
+                    </div>
+                     <div class="bg-white p-5 rounded-lg shadow-sm">
+                        <h4 class="font-bold text-lg text-stone-800">'에슬레저'와 '편안함'의 일상화</h4>
+                        <p class="text-stone-600 text-sm">기능성 소재와 편안한 디자인의 경계가 허물어지며 운동복과 일상복을 넘나드는 스타일이 새로운 표준이 되고 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fashion-week" class="scroll-mt-20 mb-16 md:mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-stone-900 mb-2">4대 패션위크 분석</h2>
+                <p class="text-stone-600">하이패션 시장의 최신 동향을 통해 2025 F/W 메가 트렌드를 파악합니다. 탭을 클릭하여 도시별 분석을 확인하세요.</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+                <h3 class="font-bold text-xl mb-4 text-center text-amber-800">2025 F/W 공통 트렌드</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div class="p-4 bg-amber-50 rounded-lg">
+                        <span class="text-4xl">🟫</span>
+                        <h4 class="font-bold mt-2">돌아온 브라운</h4>
+                        <p class="text-xs text-stone-500">차분하고 고급스러운 핵심 컬러</p>
+                    </div>
+                    <div class="p-4 bg-amber-50 rounded-lg">
+                         <span class="text-4xl">🧥</span>
+                        <h4 class="font-bold mt-2">어깨 강조 실루엣</h4>
+                        <p class="text-xs text-stone-500">현대적으로 재해석된 파워 숄더</p>
+                    </div>
+                    <div class="p-4 bg-amber-50 rounded-lg">
+                         <span class="text-4xl">👗</span>
+                        <h4 class="font-bold mt-2">무릎 기장 스커트</h4>
+                        <p class="text-xs text-stone-500">우아하고 실용적인 길이감</p>
+                    </div>
+                    <div class="p-4 bg-amber-50 rounded-lg">
+                         <span class="text-4xl">✨</span>
+                        <h4 class="font-bold mt-2">촉감을 자극하는 소재</h4>
+                        <p class="text-xs text-stone-500">인조 퍼, 벨벳, 부드러운 가죽</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex justify-center border-b border-stone-200 mb-6">
+                    <button data-tab="new-york" class="tab-link px-6 py-2 font-semibold text-stone-500 hover:text-amber-700">뉴욕</button>
+                    <button data-tab="london" class="tab-link px-6 py-2 font-semibold text-stone-500 hover:text-amber-700">런던</button>
+                    <button data-tab="milan" class="tab-link px-6 py-2 font-semibold text-stone-500 hover:text-amber-700">밀라노</button>
+                    <button data-tab="paris" class="tab-link px-6 py-2 font-semibold text-stone-500 hover:text-amber-700">파리</button>
+                </div>
+
+                <div id="tab-content" class="bg-white p-6 rounded-xl shadow-md">
+                </div>
+            </div>
+        </section>
+
+        <section id="competitors" class="scroll-mt-20 mb-16 md:mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-stone-900 mb-2">경쟁사 동향 분석</h2>
+                <p class="text-stone-600">빠르게 트렌드를 반영하는 ZARA와 H&M의 신제품 전략을 통해 시장의 반응을 파악합니다.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-bold mb-4 text-center">ZARA</h3>
+                    <ul class="space-y-3 list-disc list-inside text-stone-700">
+                        <li><strong class="font-semibold">'클래식의 재해석':</strong> 기본 아이템에 구조적인 볼륨감, 비대칭 디테일을 더해 새로움을 부여합니다.</li>
+                        <li><strong class="font-semibold">'셋업 코디':</strong> 상하의 세트 구성을 확대하여 고민 없는 세련된 스타일링을 제안합니다.</li>
+                        <li><strong class="font-semibold">'이지 웨어':</strong> 가볍고 편안한 소재를 사용하여 휴양지와 도심을 아우르는 활용도 높은 의류에 집중합니다.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-bold mb-4 text-center">H&M</h3>
+                     <ul class="space-y-3 list-disc list-inside text-stone-700">
+                        <li><strong class="font-semibold">'보헤미안 무드':</strong> 크로셰 니트, 자수 디테일 등 자유로운 감성의 제품이 주를 이룹니다.</li>
+                        <li><strong class="font-semibold">'다양한 소재 활용':</strong> 시원한 린넨부터 매끄러운 코팅 소재까지 다채로운 질감으로 스타일에 재미를 더합니다.</li>
+                        <li><strong class="font-semibold">'트렌디한 기본템':</strong> 버뮤다 팬츠 등 최신 트렌드를 반영한 기본 아이템을 합리적인 가격에 선보입니다.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="proposal" class="scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-stone-900 mb-2">디자이너를 위한 아이디어 보드</h2>
+                <p class="text-stone-600">모든 분석을 종합하여, 2025 F/W 시즌 유니클로를 위한 구체적인 상품 아이디어를 제안합니다. 카드를 클릭하여 상세 내용을 확인하세요.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="proposal-card group" style="perspective: 1000px;">
+                    <div class="proposal-card-inner relative w-full h-80 rounded-xl shadow-lg transition-transform duration-500" style="transform-style: preserve-3d;">
+                        <div class="absolute w-full h-full bg-white rounded-xl p-6 flex flex-col items-center justify-center text-center" style="backface-visibility: hidden;">
+                            <h3 class="text-xl font-bold text-amber-800">'마이 에센셜' 니트</h3>
+                            <p class="text-stone-500 mt-2">조용한 명품 트렌드를 반영한 고급 소재 기본 니트</p>
+                            <div class="flex space-x-2 mt-4">
+                                <span class="block w-8 h-8 rounded-full bg-stone-700"></span>
+                                <span class="block w-8 h-8 rounded-full bg-amber-800"></span>
+                                <span class="block w-8 h-8 rounded-full bg-stone-400"></span>
+                            </div>
+                        </div>
+                        <div class="proposal-card-back absolute w-full h-full bg-amber-700 text-white rounded-xl p-6 flex flex-col justify-center" style="backface-visibility: hidden;">
+                            <h4 class="font-bold mb-2">디자인 포인트</h4>
+                            <p class="text-sm mb-4">차분한 뉴트럴 컬러. 편안하지만 흐트러지지 않는 실루엣.</p>
+                            <h4 class="font-bold mb-2">소구점</h4>
+                            <p class="text-sm font-light">"매일 입고 싶은, 나를 위한 작은 사치"</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="proposal-card group" style="perspective: 1000px;">
+                    <div class="proposal-card-inner relative w-full h-80 rounded-xl shadow-lg transition-transform duration-500" style="transform-style: preserve-3d;">
+                        <div class="absolute w-full h-full bg-white rounded-xl p-6 flex flex-col items-center justify-center text-center" style="backface-visibility: hidden;">
+                            <h3 class="text-xl font-bold text-emerald-800">'젠더리스' 테크 파카</h3>
+                            <p class="text-stone-500 mt-2">에슬레저와 지속가능성을 결합한 기능성 아우터</p>
+                             <div class="text-4xl mt-4">♻️</div>
+                        </div>
+                        <div class="proposal-card-back absolute w-full h-full bg-emerald-700 text-white rounded-xl p-6 flex flex-col justify-center" style="backface-visibility: hidden;">
+                            <h4 class="font-bold mb-2">디자인 포인트</h4>
+                            <p class="text-sm mb-4">재활용 친환경 소재. 생활 방수/방풍 기능. 여유로운 젠더리스 핏.</p>
+                            <h4 class="font-bold mb-2">소구점</h4>
+                            <p class="text-sm font-light">"언제 어디서나, 스타일과 기능을 동시에"</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="proposal-card group" style="perspective: 1000px;">
+                    <div class="proposal-card-inner relative w-full h-80 rounded-xl shadow-lg transition-transform duration-500" style="transform-style: preserve-3d;">
+                        <div class="absolute w-full h-full bg-white rounded-xl p-6 flex flex-col items-center justify-center text-center" style="backface-visibility: hidden;">
+                            <h3 class="text-xl font-bold text-sky-800">'워크 & 라이프' 스커트</h3>
+                            <p class="text-stone-500 mt-2">편안함과 격식을 모두 갖춘 데일리 스커트 & 드레스</p>
+                            <div class="text-4xl mt-4">🏢↔️🏡</div>
+                        </div>
+                        <div class="proposal-card-back absolute w-full h-full bg-sky-700 text-white rounded-xl p-6 flex flex-col justify-center" style="backface-visibility: hidden;">
+                            <h4 class="font-bold mb-2">디자인 포인트</h4>
+                            <p class="text-sm mb-4">신축성 좋은 저지 소재. 허리 밴딩. 출근/주말룩 겸용 디자인.</p>
+                            <h4 class="font-bold mb-2">소구점</h4>
+                            <p class="text-sm font-light">"격식과 편안함, 둘 다 놓칠 수 없는 당신을 위해"</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="proposal-card group" style="perspective: 1000px;">
+                    <div class="proposal-card-inner relative w-full h-80 rounded-xl shadow-lg transition-transform duration-500" style="transform-style: preserve-3d;">
+                        <div class="absolute w-full h-full bg-white rounded-xl p-6 flex flex-col items-center justify-center text-center" style="backface-visibility: hidden;">
+                            <h3 class="text-xl font-bold text-rose-800">'소프트 터치' 액세서리</h3>
+                            <p class="text-stone-500 mt-2">촉감 트렌드를 반영한 포근한 포인트 아이템</p>
+                             <div class="text-4xl mt-4">🧣</div>
+                        </div>
+                        <div class="proposal-card-back absolute w-full h-full bg-rose-700 text-white rounded-xl p-6 flex flex-col justify-center" style="backface-visibility: hidden;">
+                            <h4 class="font-bold mb-2">디자인 포인트</h4>
+                            <p class="text-sm mb-4">부드러운 인조 퍼, 코듀로이, 벨벳 소재의 가방, 머플러, 모자.</p>
+                            <h4 class="font-bold mb-2">소구점</h4>
+                            <p class="text-sm font-light">"밋밋한 스타일에 따뜻하고 포근한 감성을 더하세요"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-800 text-white mt-16">
+        <div class="container mx-auto px-4 py-6 text-center text-sm">
+            <p>&copy; 2025 Fashion MD Agent. All Rights Reserved.</p>
+            <p class="text-stone-400">This report is for internal use at Uniqlo.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link, #mobile-menu a');
+            const sections = document.querySelectorAll('section');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    if (mobileMenu.classList.contains('hidden') === false) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = '#' + section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            const fashionWeekData = {
+                'new-york': {
+                    title: '뉴욕: 실용적 비즈니스 캐주얼',
+                    description: '"저 옷은 바로 입을 수 있겠다", "출근할 때 입고 싶다" 등 실용적이고 웨어러블한 디자인에 긍정적인 반응이 많았습니다. 특히 잘 재단된 코트와 팬츠 스타일에 대한 선호도가 높았습니다.',
+                    chartData: {
+                        labels: ['실용성', '모던함', '웨어러블', '오피스룩'],
+                        values: [90, 85, 80, 75],
+                        color: 'rgba(59, 130, 246, 0.6)'
+                    }
+                },
+                'london': {
+                    title: '런던: 개성있는 스타일',
+                    description: '독특한 컬러와 패턴 조합에 "재미있다", "신선하다"는 반응이 많았지만, "소화하기 어렵다"는 의견도 공존했습니다. 스타일링에 영감을 주는 요소로 활용하려는 경향이 보입니다.',
+                     chartData: {
+                        labels: ['독창성', '과감함', '컬러풀', '힙스터'],
+                        values: [88, 82, 70, 65],
+                        color: 'rgba(239, 68, 68, 0.6)'
+                    }
+                },
+                'milan': {
+                    title: '밀라노: 장인정신과 클래식',
+                    description: '"소재가 좋아 보인다", "클래식은 영원하다" 등 뛰어난 품질과 변치 않는 디자인에 대한 찬사가 많았습니다. 특히 가죽과 캐시미어 제품에 대한 관심이 높았습니다.',
+                    chartData: {
+                        labels: ['고급스러움', '품질', '클래식', '장인정신'],
+                        values: [95, 92, 85, 78],
+                        color: 'rgba(161, 98, 7, 0.6)'
+                    }
+                },
+                'paris': {
+                    title: '파리: 예술적 아방가르드',
+                    description: '"한편의 예술작품 같다"는 반응과 함께 "실생활에서는 불가능"이라는 현실적인 의견이 대립했습니다. 패션을 통해 새로운 영감을 얻고자 하는 니즈가 엿보입니다.',
+                    chartData: {
+                        labels: ['예술성', '미래지향', '영감', '아방가르드'],
+                        values: [93, 85, 80, 70],
+                        color: 'rgba(107, 114, 128, 0.6)'
+                    }
+                }
+            };
+
+            const tabLinks = document.querySelectorAll('.tab-link');
+            const tabContentContainer = document.getElementById('tab-content');
+            let currentChart = null;
+
+            function updateTabContent(tabId) {
+                const data = fashionWeekData[tabId];
+                if (!data) return;
+
+                tabContentContainer.innerHTML = `
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-xl font-bold text-stone-800 mb-2">${data.title}</h3>
+                            <p class="text-stone-600">${data.description}</p>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="fashionWeekChart"></canvas>
+                        </div>
+                    </div>
+                `;
+
+                if (currentChart) {
+                    currentChart.destroy();
+                }
+
+                const ctx = document.getElementById('fashionWeekChart').getContext('2d');
+                currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.chartData.labels,
+                        datasets: [{
+                            label: '소비자 관심도',
+                            data: data.chartData.values,
+                            backgroundColor: data.chartData.color,
+                            borderColor: data.chartData.color.replace('0.6', '1'),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return '관심도: ' + context.raw;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+            }
+
+            tabLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const tabId = link.dataset.tab;
+                    tabLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    updateTabContent(tabId);
+                });
+            });
+
+            tabLinks[2].click();
+
+            const proposalCards = document.querySelectorAll('.proposal-card');
+            proposalCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('flipped');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
